@@ -364,10 +364,14 @@ public class formQLBH extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
-        int quantity = 1;
+        int quantity = 0;
+        if(this.isActive()) {
+            quantity = quantity+1;
+        }
 //        int firstClick = tblProducts.getSelectedRow();
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
         tblModelSanPham.addRow(bhc.fillCart(tblProducts, quantity));
+        
     }//GEN-LAST:event_tblProductsMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

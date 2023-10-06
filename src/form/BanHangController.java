@@ -39,16 +39,16 @@ public class BanHangController {
 
         // tạo ArrayList của bảng giỏ hàng
         spGioHang.add(new SanPhamModel(sp.getIndex(), sp.getMaSp(), sp.getTenSp(), sp.getSoLuong(), sp.getGiaBan(), sp.getThanhTien()));
+        
 
         // thêm dữ liệu vào obj để fill vào bảng
         for (SanPhamModel sanPhamModel : spGioHang) {
             obj = new Object[]{sanPhamModel.getIndex(), sanPhamModel.getMaSp(), sanPhamModel.getTenSp(), quantity, sanPhamModel.getGiaBan(), sanPhamModel.getGiaBan() * quantity};
-            
             // tính tổng tiền phải trả 
             total += sanPhamModel.getGiaBan() * quantity;
             sanPhamModel.setThanhTien(total);
-
         }
+        
         return obj;
     }
 
