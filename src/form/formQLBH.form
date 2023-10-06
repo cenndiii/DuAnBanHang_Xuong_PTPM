@@ -120,6 +120,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Ch&#x1edd; Thanh To&#xe1;n"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rdoNeedPayMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rdoAll">
       <Properties>
@@ -129,6 +132,9 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="T&#x1ea5;t C&#x1ea3;"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rdoAllMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rdoCancelled">
       <Properties>
@@ -197,6 +203,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblhoadonMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -346,7 +355,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="txtMoneyPay" alignment="0" pref="213" max="32767" attributes="0"/>
-                              <Component id="jButton1" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                              <Component id="btnPay" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
                               <Component id="txtChange" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtTotal" max="32767" attributes="0"/>
                               <Component id="txtStaffName" max="32767" attributes="0"/>
@@ -391,7 +400,7 @@
                       <Component id="txtChange" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="btnPay" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace pref="24" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -430,6 +439,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtMoneyPay">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtMoneyPayFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtChange">
         </Component>
@@ -438,10 +450,13 @@
             <Property name="text" type="java.lang.String" value="Ti&#x1ec1;n Th&#x1eeb;a"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnPay">
           <Properties>
             <Property name="text" type="java.lang.String" value="Thanh To&#xe1;n"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPayActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDateCreate">
         </Component>
