@@ -14,6 +14,7 @@ public class HoaDon {
             
 
     public HoaDon() {
+        
     }
 
     public HoaDon(int index, String maHD, String ngayTao, String tenNV, String tinhTrang) {
