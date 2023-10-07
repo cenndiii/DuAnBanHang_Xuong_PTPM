@@ -7,6 +7,7 @@ package form;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -66,4 +67,32 @@ public class BanHangController {
         return obj;
     }
 
+    public ArrayList<SanPhamModel> addCart(SanPhamModel spm) {
+        SanPhamModel spCart = new SanPhamModel();
+        for (SanPhamModel sp : listSanPham) {
+            if (sp.getMaSp().equalsIgnoreCase(spm.getMaSp())) {
+                if (sp.getSoLuong() > 0) {
+                    sp.setSoLuong(sp.getSoLuong() - 1);     //sản phầm tìm được sẽ get số lượng gốc để trừ đi giá trị số lượng tìm được
+                    spCart = new SanPhamModel(sp.getIndex(), sp.getMaSp(), sp.getTenSp(), 1, sp.getGiaBan(), sp.getGiaBan());
+                    boolean check = true;
+                    for (SanPhamModel spInCart : spGioHang) {
+                        if (spInCart.getMaSp().equals(spCart.getMaSp())) {
+                            spInCart.setSoLuong(spInCart.getSoLuong() + 1);
+                            spInCart.setThanhTien(spInCart.getSoLuong() * spInCart.getGiaBan());
+                            check = false;
+                            break;
+                        }
+                    }
+
+                    if (check) {
+                        spGioHang.add(spCart);
+                    }
+                }else {
+                    //NẾU SỐ LƯỢNG HÀNG < 0
+                }
+            }
+        }
+
+        return spGioHang;
+    }
 }

@@ -25,11 +25,12 @@ public class formQLBH extends javax.swing.JFrame {
     ArrayList<SanPhamModel> listSanPham = bhc.getList();
     ArrayList<HoaDon> listHoaDon = bhc.listHD;
     ArrayList<SanPhamModel> listGioHang = bhc.spGioHang;
-    
-    private void fillTableGioHang(){
+
+    private void fillTableGioHang() {
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
         tblModelSanPham.setRowCount(0);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -136,7 +137,7 @@ public class formQLBH extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -144,6 +145,14 @@ public class formQLBH extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(tblCart);
+        if (tblCart.getColumnModel().getColumnCount() > 0) {
+            tblCart.getColumnModel().getColumn(0).setResizable(false);
+            tblCart.getColumnModel().getColumn(1).setResizable(false);
+            tblCart.getColumnModel().getColumn(2).setResizable(false);
+            tblCart.getColumnModel().getColumn(3).setResizable(false);
+            tblCart.getColumnModel().getColumn(4).setResizable(false);
+            tblCart.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -260,7 +269,7 @@ public class formQLBH extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -375,39 +384,50 @@ public class formQLBH extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
-        int quantity = 1;
-//        int firstClick = tblProducts.getSelectedRow();
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
-        tblModelSanPham.addRow(bhc.fillCart(tblProducts, quantity));
+        SanPhamModel spm = listSanPham.get(tblProducts.getSelectedRow());
+        LoadDataSanPham(listSanPham);
+        LoadDataCart( bhc.addCart(spm));
     }//GEN-LAST:event_tblProductsMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         LoadDataSanPham(listSanPham);
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
         tblModelSanPham.setRowCount(0);
+
     }//GEN-LAST:event_formWindowOpened
 
     private void btnMakeBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeBillActionPerformed
         // TODO add your handling code here:
-        index++;
-        bhc.getHoaDon(index);
-        tblModelSanPham = (DefaultTableModel) tblhoadon.getModel();
-        tblModelSanPham.setRowCount(0);
-        for (HoaDon hoaDon : listHoaDon) {
-            tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
-        }
-        listGioHang.clear();
-        fillTableGioHang();
+//        index++;
+//        bhc.getHoaDon(index);
+//        tblModelSanPham = (DefaultTableModel) tblhoadon.getModel();
+//        tblModelSanPham.setRowCount(0);
+//        for (HoaDon hoaDon : listHoaDon) {
+//            tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
+//        }
+//        listGioHang.clear();
+//        fillTableGioHang();
+
     }//GEN-LAST:event_btnMakeBillActionPerformed
 
     public void LoadDataSanPham(ArrayList<SanPhamModel> listSp) {
         tblModelSanPham = (DefaultTableModel) tblProducts.getModel();
-
         tblModelSanPham.setRowCount(0);
         for (SanPhamModel spm : listSp) {
             tblModelSanPham.addRow(new Object[]{
                 spm.getIndex(), spm.getMaSp(), spm.getTenSp(), spm.getNamBan(), spm.getTrongLuong(), spm.getMota(),
                 spm.getSoLuong(), spm.getGiaNhap(), spm.getGiaBan()
+            });
+        }
+    }
+
+    public void LoadDataCart(ArrayList<SanPhamModel> listSp) {
+        tblModelSanPham = (DefaultTableModel) tblCart.getModel();
+        tblModelSanPham.setRowCount(0);
+        for (SanPhamModel spCart : listSp) {
+            tblModelSanPham.addRow(new Object[]{
+                spCart.getIndex(), spCart.getMaSp(), spCart.getTenSp(), spCart.getSoLuong(), spCart.getGiaBan(), spCart.getThanhTien()
             });
         }
     }
