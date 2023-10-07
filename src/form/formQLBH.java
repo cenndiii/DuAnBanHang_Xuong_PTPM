@@ -27,9 +27,9 @@ public class formQLBH extends javax.swing.JFrame {
     ArrayList<SanPhamModel> listSanPham = bhc.getList();
     ArrayList<SanPhamModel> listGioHang = bhc.spGioHang;
     ArrayList<HoaDon> listHoaDon = bhc.listHD;
-    ArrayList<HoaDon> choThanhToan = bhc.choThanhToan;
+//    ArrayList<HoaDon> choThanhToan = bhc.choThanhToan;
     HoaDon hd;
-   
+
     private void fillTableGioHang() {
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
         tblModelSanPham.setRowCount(0);
@@ -415,9 +415,11 @@ public class formQLBH extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
-        int quantity = 1;
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
-        tblModelSanPham.addRow(bhc.fillCart(tblProducts, quantity));
+        SanPhamModel spm = listSanPham.get(tblProducts.getSelectedRow());
+        bhc.addCart(spm);
+        LoadDataSanPham(listSanPham);
+        LoadDataCart(bhc.spGioHang);
     }//GEN-LAST:event_tblProductsMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -435,7 +437,7 @@ public class formQLBH extends javax.swing.JFrame {
         for (HoaDon hoaDon : listHoaDon) {
             tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
         }
-        
+
         listGioHang.clear();
         fillTableGioHang();
     }//GEN-LAST:event_btnMakeBillActionPerformed
@@ -458,22 +460,22 @@ public class formQLBH extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMoneyPayFocusLost
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-        int vitri = tblhoadon.getSelectedRow();
-        hd.setTinhTrang("Đã Thanh Toán");
-        choThanhToan.get(vitri).setTinhTrang("Đã Thanh Toán");
-        choThanhToan.remove(vitri);
-        txtBillId.setText("");
-        txtChange.setText("");
-        txtDateCreate.setText("");
-        txtTotal.setText("");
-        txtMoneyPay.setText("");
-        txtStaffName.setText("");
-        fillTableHoadon(listHoaDon);
-        fillTableHoadon(choThanhToan);
+//        int vitri = tblhoadon.getSelectedRow();
+//        hd.setTinhTrang("Đã Thanh Toán");
+//        choThanhToan.get(vitri).setTinhTrang("Đã Thanh Toán");
+//        choThanhToan.remove(vitri);
+//        txtBillId.setText("");
+//        txtChange.setText("");
+//        txtDateCreate.setText("");
+//        txtTotal.setText("");
+//        txtMoneyPay.setText("");
+//        txtStaffName.setText("");
+//        fillTableHoadon(listHoaDon);
+//        fillTableHoadon(choThanhToan);
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void rdoNeedPayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoNeedPayMouseClicked
-        fillTableHoadon(choThanhToan);
+//        fillTableHoadon(choThanhToan);
     }//GEN-LAST:event_rdoNeedPayMouseClicked
 
     private void rdoAllMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoAllMouseClicked
@@ -488,6 +490,16 @@ public class formQLBH extends javax.swing.JFrame {
             tblModelSanPham.addRow(new Object[]{
                 spm.getIndex(), spm.getMaSp(), spm.getTenSp(), spm.getNamBan(), spm.getTrongLuong(), spm.getMota(),
                 spm.getSoLuong(), spm.getGiaNhap(), spm.getGiaBan()
+            });
+        }
+    }
+
+    public void LoadDataCart(ArrayList<SanPhamModel> listSp) {
+        tblModelSanPham = (DefaultTableModel) tblCart.getModel();
+        tblModelSanPham.setRowCount(0);
+        for (SanPhamModel spCart : listSp) {
+            tblModelSanPham.addRow(new Object[]{
+                spCart.getIndex(), spCart.getMaSp(), spCart.getTenSp(), spCart.getSoLuong(), spCart.getGiaBan(), spCart.getThanhTien()
             });
         }
     }
