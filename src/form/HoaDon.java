@@ -26,8 +26,6 @@ public class HoaDon {
         this.tongTien = tongTien;
     }
 
-    
-
     public int getIndex() {
         return index;
     }

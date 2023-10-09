@@ -19,7 +19,8 @@ public class BanHangController {
     ArrayList<SanPhamModel> listSanPham = new ArrayList<>();
     ArrayList<SanPhamModel> spGioHang = new ArrayList<>();
     ArrayList<HoaDon> listHD = new ArrayList<>();
-
+    ArrayList<HoaDon> choThanhToan = new ArrayList<>();
+    double total;
     public BanHangController() {
     }
 
@@ -33,40 +34,43 @@ public class BanHangController {
         return listSanPham;
     }
 
+    public ArrayList<HoaDon> getChoThanhToan(){
+        return choThanhToan;
+    }
+    
     public ArrayList<HoaDon> getHoaDon(int index) {
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Object[] obj = new Object[]{"Chờ thanh toán", "Hủy", "Chưa xử lý"};
-//        listHD.add(new HoaDon(index, "HD1", sdf.format(now), "Kien", "Chờ thanh toán"));
-//        listHD.add(new HoaDon(index, "HD2", sdf.format(now), "Giang", "Hủy"));
-//        listHD.add(new HoaDon(index, "HD3", sdf.format(now), "Hoan", "Chưa xử lý"));
+        for (SanPhamModel spm : spGioHang) {
+            total = spm.getThanhTien();
+        }
+        listHD.add(new HoaDon(index, "HD"+index, sdf.format(now), "Kien", "Chờ thanh toán",total));
+        choThanhToan.add(new HoaDon(index, "HD"+index, sdf.format(now), "Kien", "Chờ thanh toán",total));
 
         return listHD;
     }
 
-    public Object[] fillCart(JTable tblProduct, int quantity) {
-        // khai báo mảng obj
-        Object[] obj = {};
-        double total = 0;
-        // lấy dữ liệu của dòng được chọn trong bảng sản phẩm
-        int index = tblProduct.getSelectedRow();
-        SanPhamModel sp = listSanPham.get(index);
-
-        // tạo ArrayList của bảng giỏ hàng
-        spGioHang.add(new SanPhamModel(sp.getIndex(), sp.getMaSp(), sp.getTenSp(), sp.getSoLuong(), sp.getGiaBan(), sp.getThanhTien()));
-
-        // thêm dữ liệu vào obj để fill vào bảng
-        for (SanPhamModel sanPhamModel : spGioHang) {
-            obj = new Object[]{sanPhamModel.getIndex(), sanPhamModel.getMaSp(), sanPhamModel.getTenSp(), quantity, sanPhamModel.getGiaBan(), sanPhamModel.getGiaBan() * quantity};
-
-            // tính tổng tiền phải trả 
-            total += sanPhamModel.getGiaBan() * quantity;
-            sanPhamModel.setThanhTien(total);
-
-        }
-        return obj;
-    }
-
+//    public Object[] fillCart(JTable tblProduct, int quantity) {
+//        // khai báo mảng obj
+//        Object[] obj = {};
+//        double total = 0;
+//        // lấy dữ liệu của dòng được chọn trong bảng sản phẩm
+//        int index = tblProduct.getSelectedRow();
+//        SanPhamModel sp = listSanPham.get(index);
+//
+//        // tạo ArrayList của bảng giỏ hàng
+//        spGioHang.add(new SanPhamModel(sp.getIndex(), sp.getMaSp(), sp.getTenSp(), sp.getSoLuong(), sp.getGiaBan(), sp.getThanhTien()));
+//
+//        // thêm dữ liệu vào obj để fill vào bảng
+//        for (SanPhamModel sanPhamModel : spGioHang) {
+//            obj = new Object[]{sanPhamModel.getIndex(), sanPhamModel.getMaSp(), sanPhamModel.getTenSp(), quantity, sanPhamModel.getGiaBan(), sanPhamModel.getGiaBan() * quantity};
+//
+//            // tính tổng tiền phải trả 
+//            total += sanPhamModel.getGiaBan() * quantity;
+//            sanPhamModel.setThanhTien(total);
+//        }
+//        return obj;
+//    }
     public ArrayList<SanPhamModel> addCart(SanPhamModel spm) {
         SanPhamModel spCart = new SanPhamModel();
         for (SanPhamModel sp : listSanPham) {
@@ -87,7 +91,7 @@ public class BanHangController {
                     if (check) {
                         spGioHang.add(spCart);
                     }
-                }else {
+                } else {
                     //NẾU SỐ LƯỢNG HÀNG < 0
                 }
             }
