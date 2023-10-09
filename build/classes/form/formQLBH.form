@@ -151,6 +151,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x110;&#xe3; Thanh To&#xe1;n"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rdoPaidMouseClicked"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -413,6 +416,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtBillId">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -425,6 +431,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtStaffName">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -432,6 +441,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTotal">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
@@ -459,6 +471,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDateCreate">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -539,7 +554,7 @@
                     <Column editable="false" title="N&#x103;m B&#xe1;n" type="java.lang.Object"/>
                     <Column editable="false" title="Tr&#x1ecd;ng L&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
                     <Column editable="false" title="M&#xf4; T&#x1ea3;" type="java.lang.Object"/>
-                    <Column editable="true" title="SL SP" type="java.lang.Object"/>
+                    <Column editable="false" title="SL SP" type="java.lang.Object"/>
                     <Column editable="false" title="Gi&#xe1; Nh&#x1ead;p" type="java.lang.Object"/>
                     <Column editable="false" title="Gi&#xe1; B&#xe1;n" type="java.lang.Object"/>
                   </Table>
