@@ -5,6 +5,8 @@
 package form;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,18 +20,46 @@ public class formQLBH extends javax.swing.JFrame {
      */
     public formQLBH() {
         initComponents();
+        setLocationRelativeTo(null);
     }
     private int index = 0;
     DefaultTableModel tblModelSanPham;
     BanHangController bhc = new BanHangController();
     ArrayList<SanPhamModel> listSanPham = bhc.getList();
-    ArrayList<HoaDon> listHoaDon = bhc.listHD;
     ArrayList<SanPhamModel> listGioHang = bhc.spGioHang;
-    
-    private void fillTableGioHang(){
-        tblModelSanPham = (DefaultTableModel) tblCart.getModel();
+    ArrayList<HoaDon> listHoaDon = bhc.listHD;
+    ArrayList<HoaDon> choThanhToan = bhc.choThanhToan;
+    ArrayList<SanPhamModel> spGioHang = bhc.spGioHang;
+    ArrayList<HoaDon> daThanhtoan = new ArrayList<>();
+//    HoaDon hd;
+
+    private void resetTable(JTable tbl) {
+        tblModelSanPham = (DefaultTableModel) tbl.getModel();
         tblModelSanPham.setRowCount(0);
     }
+
+    private void fillTableHoadon(ArrayList<HoaDon> list) {
+        tblModelSanPham = (DefaultTableModel) tblhoadon.getModel();
+        tblModelSanPham.setRowCount(0);
+
+        for (HoaDon hoaDon : list) {
+            tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
+        }
+    }
+
+    private void checkPay(ArrayList<HoaDon> list) {
+        System.out.println(tblhoadon.getSelectedRow());
+        HoaDon hd = list.get(tblhoadon.getSelectedRow());
+        if (hd.getTinhTrang().equals("Đã Thanh Toán")) {
+            JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
+        } else {
+            txtBillId.setText(hd.getMaHD());
+            txtDateCreate.setText(hd.getNgayTao());
+            txtStaffName.setText(hd.getTenNV());
+            txtTotal.setText(String.valueOf(hd.getTongTien()));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -57,7 +87,7 @@ public class formQLBH extends javax.swing.JFrame {
         txtMoneyPay = new javax.swing.JTextField();
         txtChange = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnPay = new javax.swing.JButton();
         txtDateCreate = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -83,16 +113,31 @@ public class formQLBH extends javax.swing.JFrame {
 
         buttonGroup1.add(rdoNeedPay);
         rdoNeedPay.setText("Chờ Thanh Toán");
+        rdoNeedPay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdoNeedPayMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(rdoAll);
         rdoAll.setSelected(true);
         rdoAll.setText("Tất Cả");
+        rdoAll.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdoAllMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(rdoCancelled);
         rdoCancelled.setText("Đã Hủy");
 
         buttonGroup1.add(rdoPaid);
         rdoPaid.setText("Đã Thanh Toán");
+        rdoPaid.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdoPaidMouseClicked(evt);
+            }
+        });
 
         tblhoadon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -118,6 +163,11 @@ public class formQLBH extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblhoadon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblhoadonMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblhoadon);
@@ -166,17 +216,36 @@ public class formQLBH extends javax.swing.JFrame {
 
         jLabel2.setText("Mã Hd");
 
+        txtBillId.setEnabled(false);
+
         jLabel3.setText("Ngày Tạo");
 
         jLabel4.setText("Tên Nv");
 
+        txtStaffName.setEnabled(false);
+
         jLabel5.setText("Tổng Tiền");
+
+        txtTotal.setEnabled(false);
 
         jLabel6.setText("Tiền Khách Đưa");
 
+        txtMoneyPay.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtMoneyPayFocusLost(evt);
+            }
+        });
+
         jLabel7.setText("Tiền Thừa");
 
-        jButton1.setText("Thanh Toán");
+        btnPay.setText("Thanh Toán");
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayActionPerformed(evt);
+            }
+        });
+
+        txtDateCreate.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -202,7 +271,7 @@ public class formQLBH extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtMoneyPay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtChange, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTotal)
                             .addComponent(txtStaffName))))
@@ -236,7 +305,7 @@ public class formQLBH extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -260,7 +329,7 @@ public class formQLBH extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -375,30 +444,130 @@ public class formQLBH extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
-        int quantity = 1;
-//        int firstClick = tblProducts.getSelectedRow();
         tblModelSanPham = (DefaultTableModel) tblCart.getModel();
-        tblModelSanPham.addRow(bhc.fillCart(tblProducts, quantity));
+        SanPhamModel spm = listSanPham.get(tblProducts.getSelectedRow());
+        bhc.addCart(spm);
+        LoadDataSanPham(listSanPham);
+        LoadDataCart(bhc.spGioHang);
     }//GEN-LAST:event_tblProductsMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         LoadDataSanPham(listSanPham);
-        tblModelSanPham = (DefaultTableModel) tblCart.getModel();
-        tblModelSanPham.setRowCount(0);
+        resetTable(tblCart);
+        resetTable(tblhoadon);
     }//GEN-LAST:event_formWindowOpened
 
     private void btnMakeBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeBillActionPerformed
         // TODO add your handling code here:
         index++;
-        bhc.getHoaDon(index);
-        tblModelSanPham = (DefaultTableModel) tblhoadon.getModel();
-        tblModelSanPham.setRowCount(0);
-        for (HoaDon hoaDon : listHoaDon) {
-            tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
+        if (tblCart.getRowCount() <= 0) {
+            JOptionPane.showMessageDialog(this, "Ban chua chon mat hang de mua");
+        } else {
+            bhc.getHoaDon(index);
+            tblModelSanPham = (DefaultTableModel) tblhoadon.getModel();
+            tblModelSanPham.setRowCount(0);
+            for (HoaDon hoaDon : listHoaDon) {
+                tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
+            }
+            rdoAll.setSelected(true);
+            listGioHang.clear();
+            resetTable(tblCart);
         }
-        listGioHang.clear();
-        fillTableGioHang();
     }//GEN-LAST:event_btnMakeBillActionPerformed
+
+    private void tblhoadonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblhoadonMouseClicked
+        if (rdoNeedPay.isSelected()) {
+            HoaDon hd = choThanhToan.get(tblhoadon.getSelectedRow());
+            if (hd.getTinhTrang().equalsIgnoreCase("Đã Thanh Toán")) {
+                JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
+            } else {
+                txtBillId.setText(hd.getMaHD());
+                txtDateCreate.setText(hd.getNgayTao());
+                txtStaffName.setText(hd.getTenNV());
+                txtTotal.setText(String.valueOf(hd.getTongTien()));
+            }
+        }else{
+            HoaDon hd = listHoaDon.get(tblhoadon.getSelectedRow());
+            if (hd.getTinhTrang().equalsIgnoreCase("Đã Thanh Toán")) {
+                JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
+            } else {
+                txtBillId.setText(hd.getMaHD());
+                txtDateCreate.setText(hd.getNgayTao());
+                txtStaffName.setText(hd.getTenNV());
+                txtTotal.setText(String.valueOf(hd.getTongTien()));
+            }
+        }
+
+
+    }//GEN-LAST:event_tblhoadonMouseClicked
+
+    private void txtMoneyPayFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMoneyPayFocusLost
+
+//        if (txtMoneyPay.getText().isBlank()) {
+//            JOptionPane.showMessageDialog(this, "So tien khach tra khong duoc de trong");
+//        }
+        try {
+            Double.valueOf(txtMoneyPay.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Tien nhap vao khong dung dinh dang");
+            return;
+        }
+        if (Double.parseDouble(txtMoneyPay.getText()) < Double.parseDouble(txtTotal.getText())) {
+            JOptionPane.showMessageDialog(this, "So tien khach tra khong duoc nho hon tong tien");
+        } else {
+            HoaDon hd = listHoaDon.get(tblhoadon.getSelectedRow());
+            txtChange.setText(String.valueOf(Double.parseDouble(txtMoneyPay.getText()) - hd.getTongTien()));
+        }
+    }//GEN-LAST:event_txtMoneyPayFocusLost
+
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+
+        try {
+            if (tblhoadon.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(this, "Ban chua chon hoa don de thanh toan");
+                return;
+            }
+            Double.valueOf(txtMoneyPay.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Tien nhap vao khong dung dinh dang");
+            return;
+        }
+        if (Double.parseDouble(txtMoneyPay.getText()) < Double.parseDouble(txtTotal.getText())) {
+            JOptionPane.showMessageDialog(this, "So tien khach tra khong duoc nho hon tong tien");
+            return;
+        } else {
+            HoaDon vitri = choThanhToan.get(tblhoadon.getSelectedRow());
+            HoaDon hd = listHoaDon.get(tblhoadon.getSelectedRow());
+            hd.setTinhTrang("Đã Thanh Toán");
+            vitri.setTinhTrang("Đã Thanh Toán");
+            daThanhtoan.add(new HoaDon(vitri.getIndex(), vitri.getMaHD(), vitri.getNgayTao(), vitri.getTenNV(), "Đã Thanh toán", 0));
+            choThanhToan.remove(tblhoadon.getSelectedRow());
+            txtBillId.setText("");
+            txtChange.setText("");
+            txtDateCreate.setText("");
+            txtTotal.setText("");
+            txtMoneyPay.setText("");
+            txtStaffName.setText("");
+        }
+
+        if (rdoAll.isSelected()) {
+            fillTableHoadon(listHoaDon);
+        } else {
+            fillTableHoadon(choThanhToan);
+        }
+    }//GEN-LAST:event_btnPayActionPerformed
+
+    private void rdoNeedPayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoNeedPayMouseClicked
+        fillTableHoadon(choThanhToan);
+    }//GEN-LAST:event_rdoNeedPayMouseClicked
+
+    private void rdoAllMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoAllMouseClicked
+        fillTableHoadon(listHoaDon);
+    }//GEN-LAST:event_rdoAllMouseClicked
+
+    private void rdoPaidMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoPaidMouseClicked
+        fillTableHoadon(daThanhtoan);
+    }//GEN-LAST:event_rdoPaidMouseClicked
 
     public void LoadDataSanPham(ArrayList<SanPhamModel> listSp) {
         tblModelSanPham = (DefaultTableModel) tblProducts.getModel();
@@ -408,6 +577,16 @@ public class formQLBH extends javax.swing.JFrame {
             tblModelSanPham.addRow(new Object[]{
                 spm.getIndex(), spm.getMaSp(), spm.getTenSp(), spm.getNamBan(), spm.getTrongLuong(), spm.getMota(),
                 spm.getSoLuong(), spm.getGiaNhap(), spm.getGiaBan()
+            });
+        }
+    }
+
+    public void LoadDataCart(ArrayList<SanPhamModel> listSp) {
+        tblModelSanPham = (DefaultTableModel) tblCart.getModel();
+        tblModelSanPham.setRowCount(0);
+        for (SanPhamModel spCart : listSp) {
+            tblModelSanPham.addRow(new Object[]{
+                spCart.getIndex(), spCart.getMaSp(), spCart.getTenSp(), spCart.getSoLuong(), spCart.getGiaBan(), spCart.getThanhTien()
             });
         }
     }
@@ -447,8 +626,8 @@ public class formQLBH extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMakeBill;
+    private javax.swing.JButton btnPay;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -11,18 +11,19 @@ package form;
 public class HoaDon {
     private int index;
     private String maHD, ngayTao, tenNV, tinhTrang;
-            
+    private double tongTien;
 
     public HoaDon() {
         
     }
 
-    public HoaDon(int index, String maHD, String ngayTao, String tenNV, String tinhTrang) {
+    public HoaDon(int index, String maHD, String ngayTao, String tenNV, String tinhTrang, double tongTien) {
         this.index = index;
         this.maHD = maHD;
         this.ngayTao = ngayTao;
         this.tenNV = tenNV;
         this.tinhTrang = tinhTrang;
+        this.tongTien = tongTien;
     }
 
     public int getIndex() {
@@ -63,6 +64,14 @@ public class HoaDon {
 
     public void setTinhTrang(String tinhTrang) {
         this.tinhTrang = tinhTrang;
+    }
+
+    public double getTongTien() {
+        return tongTien;
+    }
+
+    public void setTongTien(double tongTien) {
+        this.tongTien = tongTien;
     }
     
 }
