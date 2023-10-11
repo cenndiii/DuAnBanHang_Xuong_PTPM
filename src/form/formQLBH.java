@@ -48,7 +48,6 @@ public class formQLBH extends javax.swing.JFrame {
     }
 
     private void checkPay(ArrayList<HoaDon> list) {
-        System.out.println(tblhoadon.getSelectedRow());
         HoaDon hd = list.get(tblhoadon.getSelectedRow());
         if (hd.getTinhTrang().equals("Đã Thanh Toán")) {
             JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
@@ -112,6 +111,7 @@ public class formQLBH extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(rdoNeedPay);
+        rdoNeedPay.setSelected(true);
         rdoNeedPay.setText("Chờ Thanh Toán");
         rdoNeedPay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -120,7 +120,6 @@ public class formQLBH extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(rdoAll);
-        rdoAll.setSelected(true);
         rdoAll.setText("Tất Cả");
         rdoAll.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -458,7 +457,8 @@ public class formQLBH extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnMakeBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeBillActionPerformed
-        // TODO add your handling code here:
+
+        rdoNeedPay.setSelected(true);
         index++;
         if (tblCart.getRowCount() <= 0) {
             JOptionPane.showMessageDialog(this, "Ban chua chon mat hang de mua");
@@ -468,8 +468,7 @@ public class formQLBH extends javax.swing.JFrame {
             tblModelSanPham.setRowCount(0);
             for (HoaDon hoaDon : listHoaDon) {
                 tblModelSanPham.addRow(new Object[]{hoaDon.getIndex(), hoaDon.getMaHD(), hoaDon.getNgayTao(), hoaDon.getTenNV(), hoaDon.getTinhTrang()});
-            }
-            rdoAll.setSelected(true);
+            }            
             listGioHang.clear();
             resetTable(tblCart);
         }
@@ -486,16 +485,21 @@ public class formQLBH extends javax.swing.JFrame {
                 txtStaffName.setText(hd.getTenNV());
                 txtTotal.setText(String.valueOf(hd.getTongTien()));
             }
-        }else{
+        } else if (rdoPaid.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
+        } else {
             HoaDon hd = listHoaDon.get(tblhoadon.getSelectedRow());
             if (hd.getTinhTrang().equalsIgnoreCase("Đã Thanh Toán")) {
                 JOptionPane.showMessageDialog(this, "Hóa đơn đã được thanh toán");
-            } else {
-                txtBillId.setText(hd.getMaHD());
-                txtDateCreate.setText(hd.getNgayTao());
-                txtStaffName.setText(hd.getTenNV());
-                txtTotal.setText(String.valueOf(hd.getTongTien()));
             }
+        }
+        if (rdoAll.isSelected()) {
+            txtBillId.setText("");
+            txtChange.setText("");
+            txtDateCreate.setText("");
+            txtTotal.setText("");
+            txtMoneyPay.setText("");
+            txtStaffName.setText("");
         }
 
 
@@ -536,10 +540,15 @@ public class formQLBH extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "So tien khach tra khong duoc nho hon tong tien");
             return;
         } else {
+//            HoaDon hd = listHoaDon.get(tblhoadon.getSelectedRow());
+//            hd.setTinhTrang("Đã Thanh Toán");
             HoaDon vitri = choThanhToan.get(tblhoadon.getSelectedRow());
-            HoaDon hd = listHoaDon.get(tblhoadon.getSelectedRow());
-            hd.setTinhTrang("Đã Thanh Toán");
             vitri.setTinhTrang("Đã Thanh Toán");
+            for (HoaDon listHd : listHoaDon) {
+                if(listHd.getMaHD().equals(vitri.getMaHD())){
+                    listHd.setTinhTrang("Đã thanh toán");
+                }
+            }
             daThanhtoan.add(new HoaDon(vitri.getIndex(), vitri.getMaHD(), vitri.getNgayTao(), vitri.getTenNV(), "Đã Thanh toán", 0));
             choThanhToan.remove(tblhoadon.getSelectedRow());
             txtBillId.setText("");
